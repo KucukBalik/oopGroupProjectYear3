@@ -2,8 +2,11 @@ package ie.atu.books_service;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+import org.yaml.snakeyaml.events.Event;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 @RequestMapping("/book")
@@ -11,6 +14,10 @@ import java.util.List;
 public class BookController {
 
     List<Book> books = new ArrayList<>();
+    HashMap<Integer, Book> booksMap = new HashMap<>();
+    List<Integer> removedIDs = new ArrayList<>();
+
+    int ID = 0;
 
     @GetMapping("/hello")
     public String hello()
@@ -19,30 +26,56 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public List<Book> getBooks()
+    public HashMap<Integer, Book> getBooks()
     {
-        Book myBook = new Book("Harry Potter", "JK Rowling", "JK Rowling");
-        books.add(myBook);
-
-        return books;
+        return booksMap;
     }
 
     @PostMapping("/addBook")
     public Book addBook(@RequestBody @Valid Book myBook)
     {
-        books.add(myBook);
+        if(removedIDs.isEmpty()==false){
+            Collections.sort(removedIDs);
+            booksMap.put(removedIDs.getFirst(), myBook);
+        }else{
+            ID++;
+            booksMap.put(ID, myBook);
+        }
 
         return myBook;
     }
 
     @PostMapping("/addBulkBook")
-    public List<Book> bulkAdd(@RequestBody  List<@Valid Book> myBooks)
+    public HashMap<Integer, Book> myBooks(@RequestBody  List<@Valid Book> myBooks)
     {
         books.addAll(myBooks);
 
-        return books;
+        for(int i = 0; i < myBooks.size(); i++){
+            if(removedIDs.isEmpty()==false){
+                Collections.sort(removedIDs);
+                booksMap.put(removedIDs.getFirst(), myBooks.get(i));
+            }else{
+                ID++;
+                booksMap.put(ID, myBooks.get(i));
+            }
+
+        }
+
+        return booksMap;
 
 
     }
+
+    @PostMapping("/deleteBook")
+    public HashMap<Integer, Book> myBooks (@RequestBody @Valid Integer ID){
+
+        booksMap.remove(ID);
+        removedIDs.add(ID);
+        return booksMap;
+
+    }
+
+   // @PostMapping("/restartThe")
+
 
 }
