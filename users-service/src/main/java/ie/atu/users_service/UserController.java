@@ -11,13 +11,6 @@ import java.util.List;
 public class UserController {
     List<User> userList = new ArrayList<>();
 
-    // basic hello endpoint to test swagger
-    @GetMapping("/hello")
-    public String hello()
-    {
-        return "Hello user";
-    }
-
     // Post method to create a single user
     @PostMapping("/addUser")
     public User addUser(@RequestBody User myUser)
@@ -33,8 +26,20 @@ public class UserController {
         return userList;
     }
 
+    // Get method to return list of all users
     @GetMapping("/returnAllUsers")
     public List<User> getUserList(){
         return userList;
     }
+
+    /*
+    TODO
+    - add @PutMapping for updating users
+    - add @DeleteMapping to delete users
+    - Add crud tests (basic validation using @Valid and other annotations
+    - add lombok to reduce redundancy
+    - add ID for users, we can simply initialize id to 1, set user ID and then increment ID so there is no dupes
+    -> slight error with this, as @RequestBody will ask for all fields set in user
+       (email, passwd, ID) but wont assign a new id as we handle that separately. not ideal but works
+     */
 }
