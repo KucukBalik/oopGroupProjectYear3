@@ -19,11 +19,12 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public String getBooks()
+    public List<Book> getBooks()
     {
         Book myBook = new Book("Harry Potter", "JK Rowling", "JK Rowling");
+        books.add(myBook);
 
-        return myBook.toString();
+        return books;
     }
 
     @PostMapping("/addBook")
@@ -34,8 +35,8 @@ public class BookController {
         return myBook;
     }
 
-    @PostMapping
-    public List<Book> addBooks(@RequestBody  List<@Valid Book> myBooks)
+    @PostMapping("/addBulkBook")
+    public List<Book> bulkAdd(@RequestBody  List<@Valid Book> myBooks)
     {
         books.addAll(myBooks);
 
