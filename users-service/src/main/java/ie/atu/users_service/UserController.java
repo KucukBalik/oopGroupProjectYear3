@@ -27,9 +27,14 @@ public class UserController {
     }
 
     // Post method to add multiple users
-    @PostMapping
+    @PostMapping("/addUsers")
     public List<User> addUsers(@RequestBody List<User> users){
         userList.addAll(users);
+        return userList;
+    }
+
+    @GetMapping("/returnAllUsers")
+    public List<User> getUserList(){
         return userList;
     }
 }
