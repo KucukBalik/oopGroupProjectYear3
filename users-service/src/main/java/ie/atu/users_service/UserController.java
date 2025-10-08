@@ -1,6 +1,6 @@
 package ie.atu.users_service;
 
-
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class UserController {
 
     // Post method to create a single user
     @PostMapping("/addUser")
-    public User addUser(@RequestBody User myUser)
+    public User addUser(@Valid @RequestBody User myUser)
     {
         userList.add(myUser);
         return myUser;
@@ -21,7 +21,7 @@ public class UserController {
 
     // Post method to add multiple users
     @PostMapping("/addUsers")
-    public List<User> addUsers(@RequestBody List<User> users){
+    public List<User> addUsers(@Valid @RequestBody List<User> users){
         userList.addAll(users);
         return userList;
     }
