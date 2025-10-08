@@ -66,6 +66,16 @@ public class BookController {
 
     }
 
+    @PostMapping("/update/{id}/")
+    public HashMap<Integer, Book> myBooks(@PathVariable int id, @RequestBody @Valid Book myBook)
+    {
+
+        booksMap.put(id, myBook);
+
+        return booksMap;
+    }
+
+
     @DeleteMapping("/delete/{id}")
     public HashMap<Integer, Book> myBooks (@PathVariable int id) {
 
