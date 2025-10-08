@@ -10,12 +10,15 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Book {
+
     @NotBlank
     @Size(min = 1, max = 100, message ="Invalid Entry")
     private String name;
+
     @NotBlank
     @Size(min = 1, max = 100, message ="Invalid Entry")
     private String author;
+
     @NotBlank
     @Size(min = 1, max = 100, message ="Invalid Entry")
     private String publisher;
