@@ -66,16 +66,14 @@ public class BookController {
 
     }
 
-    @PostMapping("/deleteBook")
-    public HashMap<Integer, Book> myBooks (@RequestBody @Valid Integer ID){
+    @DeleteMapping("/delete/{id}")
+    public HashMap<Integer, Book> myBooks (@PathVariable int id) {
 
-        booksMap.remove(ID);
-        removedIDs.add(ID);
+        booksMap.remove(id);
+        removedIDs.add(id);
         return booksMap;
 
     }
-
-   // @PostMapping("/restartThe")
 
 
 }
