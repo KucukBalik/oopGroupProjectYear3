@@ -3,6 +3,15 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="users-service (1)" />
+        <module name="books-service (1)" />
+        <module name="loans-service (1)" />
+        <module name="notifications-service (1)" />
+      </profile>
       <profile name="Annotation profile for users-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -14,15 +23,6 @@
         <module name="books-service" />
         <module name="users-service" />
         <module name="notifications-service" />
-      </profile>
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="users-service (1)" />
-        <module name="books-service (1)" />
-        <module name="loans-service (1)" />
-        <module name="notifications-service (1)" />
       </profile>
     </annotationProcessing>
   </component>
