@@ -1,4 +1,4 @@
-package ie.atu.users_service;
+package ie.atu.users_service.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
