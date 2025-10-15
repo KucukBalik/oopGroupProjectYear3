@@ -12,11 +12,12 @@ public class UserService {
 
     private final List<User> userList = new ArrayList<>();
 
-    // Defensive Copy of User List
+    // Defensive Copy of User List -
     public List<User> getUserList(){
         return new ArrayList<>(userList);
     }
 
+    // Search By ID
     public Optional<User> getUserByID(String id){
         for (User user : userList){
             if(user.getUserID().equals(id)){
@@ -26,17 +27,10 @@ public class UserService {
         return Optional.empty();
     }
 
-    public User createUser(User user){
-        if(getUserByID(user.getUserID()).isPresent()){
-            throw new IllegalArgumentException("User already exists");
-        }
-        userList.add(user);
-        return user;
-    }
-
-    public List<User> createUsers(List<User> users){
+    // Create Multiple Users
+    public List<User> createUsers(List<User> userList){
         List<User> addedUsers = new ArrayList<>();
-        for(User user : users){
+        for(User user : userList){
             if(getUserByID(user.getUserID()).isPresent()){
                 throw new IllegalArgumentException("User already exists");
             }
@@ -45,5 +39,13 @@ public class UserService {
         return addedUsers;
     }
 
+    // Create One User
+    public User createUser(User user){
+        if(getUserByID(user.getUserID()).isPresent()){
+            throw new IllegalArgumentException("User already exists");
+        }
+        userList.add(user);
+        return user;
+    }
 
 }

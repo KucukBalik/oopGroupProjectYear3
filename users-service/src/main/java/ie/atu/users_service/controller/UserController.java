@@ -15,13 +15,13 @@ import java.util.Optional;
 @RestController
 public class UserController {
 
-    // Constructor based dependency injection
+    // Constructor Based Dependency Injection
     private final UserService userService;
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    // Get method to return list of all users
+    // Get Request to Return List of all Users
     @GetMapping("/returnAllUsers")
     public ResponseEntity<List<User>> getUserList(){
         return ResponseEntity.ok(userService.getUserList());
@@ -56,4 +56,5 @@ public class UserController {
                 .created(URI.create("/api/users"))
                 .body(addedUsers);
     }
+
 }

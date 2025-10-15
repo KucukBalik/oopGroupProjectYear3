@@ -8,17 +8,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor@NoArgsConstructor@Builder
+@Data@AllArgsConstructor@NoArgsConstructor@Builder
 public class User {
-    @NotBlank
-    @Size(max=50)
+    @NotBlank@Size(max=50)
     private String userID;
-    @NotBlank
-    @Size(min = 5, max = 30)
-    @Email
+    @Email@NotBlank@Size(min = 5, max = 30)
     private String email;
-    @NotBlank
-    @Size(min = 8, max = 30)
+    @NotBlank@Size(min = 8, max = 30)
     private String password;
 }
