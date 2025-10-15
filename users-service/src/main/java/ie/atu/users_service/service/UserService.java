@@ -27,9 +27,22 @@ public class UserService {
     }
 
     public User createUser(User user){
-        // add find by ID method once added to controller class
+        if(getUserByID(user.getUserID()).isPresent()){
+            throw new IllegalArgumentException("User already exists");
+        }
         userList.add(user);
         return user;
+    }
+
+    public List<User> createUsers(List<User> users){
+        List<User> addedUsers = new ArrayList<>();
+        for(User user : users){
+            if(getUserByID(user.getUserID()).isPresent()){
+                throw new IllegalArgumentException("User already exists");
+            }
+            addedUsers.add(createUser(user));
+        }
+        return addedUsers;
     }
 
 
