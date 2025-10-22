@@ -59,10 +59,10 @@ public class UserController {
     }
 
     // Put method to update details
-    @PutMapping("/updateUser")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable String userID ) throws Exception {
-        user.setUserID(userID);
-        Optional<User> userFound = userService.getUserByID(userID);
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable String id ) throws Exception {
+        user.setUserID(id);
+        Optional<User> userFound = userService.getUserByID(id);
 
         if (userFound.isPresent()) {
             User userUpdated = userService.update(user);
@@ -72,10 +72,24 @@ public class UserController {
             return ResponseEntity.notFound().build(); //("User not found");
         }
 
-
     }
 
     // Delete method to Delete details
+    @DeleteMapping("/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable String id) {
+        userService.getUserByID(id);
+        Optional<User> userFound = userService.getUserByID(id);
+
+        if (userFound.isPresent()) {
+            User userDeleted = userService.deleteUser(userFound.get());
+            return ResponseEntity.ok(userDeleted);  //("User deleted successfully");
+        }
+        else {
+            return ResponseEntity.notFound().build();   //("User not found");
+        }
+    }
+
+
 
 
 }

@@ -48,6 +48,7 @@ public class UserService {
         return user;
     }
 
+    // Update User
     public User update(User user) throws Exception {
         Optional<User> userFound = getUserByID(user.getUserID());
         if(userFound.isPresent()){
@@ -58,4 +59,16 @@ public class UserService {
         }
         throw new Exception();
     }
+
+    // Delete User
+    public User deleteUser(User userFound) {
+        if(getUserByID(userFound.getUserID()).isPresent()){
+            userList.remove(userFound);
+            return userFound;
+        }
+        throw new IllegalArgumentException("User not found");
+    }
+
+
+
 }
