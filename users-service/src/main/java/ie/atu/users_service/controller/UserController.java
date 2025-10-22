@@ -3,6 +3,7 @@ package ie.atu.users_service.controller;
 import ie.atu.users_service.model.User;
 import ie.atu.users_service.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,24 +18,24 @@ public class UserController {
 
     // Constructor Based Dependency Injection
     private final UserService userService;
+
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     // Get Request to Return List of all Users
     @GetMapping("/returnAllUsers")
-    public ResponseEntity<List<User>> getUserList(){
+    public ResponseEntity<List<User>> getUserList() {
         return ResponseEntity.ok(userService.getUserList());
     }
 
     // Get Request to find by ID Search
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable String id){
+    public ResponseEntity<User> getUserById(@PathVariable String id) {
         Optional<User> userFound = userService.getUserByID(id);
-        if(userFound.isPresent()){
+        if (userFound.isPresent()) {
             return ResponseEntity.ok(userFound.get());
-        }
-        else{
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
@@ -50,11 +51,31 @@ public class UserController {
 
     // Post method to add multiple users
     @PostMapping("/addUsers")
-    public ResponseEntity<List<User>> addUsers(@Valid @RequestBody List<User> users){
+    public ResponseEntity<List<User>> addUsers(@Valid @RequestBody List<User> users) {
         List<User> addedUsers = userService.createUsers(users);
         return ResponseEntity
                 .created(URI.create("/api/users"))
                 .body(addedUsers);
     }
+
+    // Put method to update details
+    @PutMapping("/updateUser")
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable String userID ) throws Exception {
+        user.setUserID(userID);
+        Optional<User> userFound = userService.getUserByID(userID);
+
+        if (userFound.isPresent()) {
+            User userUpdated = userService.update(user);
+            return ResponseEntity.ok(userUpdated); //("User updated successfully");
+        }
+        else {
+            return ResponseEntity.notFound().build(); //("User not found");
+        }
+
+
+    }
+
+    // Delete method to Delete details
+
 
 }

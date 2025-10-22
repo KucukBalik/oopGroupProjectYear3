@@ -48,4 +48,14 @@ public class UserService {
         return user;
     }
 
+    public User update(User user) throws Exception {
+        Optional<User> userFound = getUserByID(user.getUserID());
+        if(userFound.isPresent()){
+            User updated = userFound.get();
+            updated.setPassword(user.getPassword());
+            updated.setEmail(user.getEmail());
+            return updated;
+        }
+        throw new Exception();
+    }
 }
