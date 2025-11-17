@@ -1,8 +1,8 @@
-package ie.atu.books_service;
+package ie.atu.books_service.controller;
 
+import ie.atu.books_service.model.Book;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-import org.yaml.snakeyaml.events.Event;
 
 import java.util.ArrayList;
 import java.util.Collections;

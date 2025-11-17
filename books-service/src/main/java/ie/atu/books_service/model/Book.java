@@ -1,7 +1,6 @@
-package ie.atu.books_service;
+package ie.atu.books_service.model;
 
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
