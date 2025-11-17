@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserServiceTest {
+public class  UserServiceTest {
     private UserService userService;
 
     @BeforeEach
@@ -44,5 +44,36 @@ public class UserServiceTest {
                         .userID("U2")
                         .email("rob@ex.ie")
                         .build()));
+    }
+
+    @Test
+    void updateUserSuccess(){
+        User oldUser = User.builder()
+                .userID("U001")
+                .email("meike@gmail.com")
+                .password("suprsecure")
+                .build();
+        userService.createUser(oldUser);
+
+        User newUser = User.builder()
+                .userID("U001")
+                .email("notMeike@gmail.com")
+                .password("1234")
+                .build();
+        User updating = userService.update(newUser);
+        assertEquals(newUser.getEmail(), updating.getEmail());
+    }
+
+    @Test
+    void deleteUserSuccess(){
+        User oldUser = User.builder()
+                .userID("U001")
+                .email("meike@gmail.com")
+                .password("suprsecure")
+                .build();
+        userService.createUser(oldUser);
+        userService.deleteUser(oldUser);
+        Optional<User> found = userService.getUserByID("U001");
+        assertTrue(found.isEmpty());
     }
 }

@@ -49,7 +49,7 @@ public class UserService {
     }
 
     // Update User
-    public User update(User user) throws Exception {
+    public User update(User user) {
         Optional<User> userFound = getUserByID(user.getUserID());
         if(userFound.isPresent()){
             User updated = userFound.get();
@@ -57,7 +57,7 @@ public class UserService {
             updated.setEmail(user.getEmail());
             return updated;
         }
-        throw new Exception();
+        throw new IllegalArgumentException("User not found");
     }
 
     // Delete User
