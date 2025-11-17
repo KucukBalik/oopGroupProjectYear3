@@ -1,5 +1,6 @@
 package ie.atu.users_service.controller;
 
+import ie.atu.users_service.errorHandling.NotFoundException;
 import ie.atu.users_service.model.User;
 import ie.atu.users_service.service.UserService;
 import jakarta.validation.Valid;
@@ -36,7 +37,7 @@ public class UserController {
         if (userFound.isPresent()) {
             return ResponseEntity.ok(userFound.get());
         } else {
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("User" + id + "doesnt exist");
         }
     }
 
@@ -69,9 +70,8 @@ public class UserController {
             return ResponseEntity.ok(userUpdated); //("User updated successfully");
         }
         else {
-            return ResponseEntity.notFound().build(); //("User not found");
+            throw new NotFoundException("User" + id + "doesnt exist");
         }
-
     }
 
     // Delete method to Delete details
@@ -85,11 +85,8 @@ public class UserController {
             return ResponseEntity.ok(userDeleted);  //("User deleted successfully");
         }
         else {
-            return ResponseEntity.notFound().build();   //("User not found");
+            throw new NotFoundException("User" + id + "doesnt exist");
         }
     }
-
-
-
 
 }
