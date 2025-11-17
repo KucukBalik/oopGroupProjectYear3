@@ -1,8 +1,11 @@
 package ie.atu.users_service.service;
 
+import ie.atu.users_service.errorHandling.DuplicateExceptionHandling;
+import ie.atu.users_service.errorHandling.NotFoundException;
 import ie.atu.users_service.model.User;
 import org.springframework.stereotype.Service;
 
+import java.io.NotActiveException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +35,7 @@ public class UserService {
         List<User> addedUsers = new ArrayList<>();
         for(User user : userList){
             if(getUserByID(user.getUserID()).isPresent()){
-                throw new IllegalArgumentException("User already exists");
+                throw new DuplicateExceptionHandling("Passenger " + user.getUserID() + " already exists D:");
             }
             addedUsers.add(createUser(user));
         }
@@ -42,7 +45,7 @@ public class UserService {
     // Create One User
     public User createUser(User user){
         if(getUserByID(user.getUserID()).isPresent()){
-            throw new IllegalArgumentException("User already exists");
+            throw new DuplicateExceptionHandling("Passenger " + user.getUserID() + " already exists D:");
         }
         userList.add(user);
         return user;
@@ -57,7 +60,7 @@ public class UserService {
             updated.setEmail(user.getEmail());
             return updated;
         }
-        throw new IllegalArgumentException("User not found");
+        throw new NotFoundException("User " +  user.getUserID() + " doesnt exist");
     }
 
     // Delete User
@@ -66,7 +69,7 @@ public class UserService {
             userList.remove(userFound);
             return userFound;
         }
-        throw new IllegalArgumentException("User not found");
+        throw new NotFoundException("User " + userFound.getUserID() + " not found");
     }
 
 
