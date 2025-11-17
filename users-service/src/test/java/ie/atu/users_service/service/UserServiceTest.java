@@ -1,5 +1,6 @@
 package ie.atu.users_service.service;
 
+import ie.atu.users_service.errorHandling.DuplicateExceptionHandling;
 import ie.atu.users_service.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ public class  UserServiceTest {
                 .email("rob@atu.ie")
                 .build());
 
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(DuplicateExceptionHandling.class, () ->
                 userService.createUser(User.builder()
                         .userID("U2")
                         .email("rob@ex.ie")
