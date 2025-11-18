@@ -1,13 +1,28 @@
 # Library Management System 
-Our project is Springboot app with microservices which will allow users to register/login, borrow books and receive some kind of notifications.  
+This project is a Spring Boot microservices application designed to provide a full library management experience.
+It includes multiple services that work together to allow users to:
+
++ Register and log in
++ Borrow and return books
++ Receive notifications
++ Interact with different parts of the system through microservices
+
+Each service is built separately so the system is easier to manage, update, and scale.
 
 # Services 
-Includes 4 services, Users services(login/register) , Books Service(for list of books, create etc...), Loans Service(To borrow books) and notifications Service(send notifications if due) and possibly a records service to keep track and log(I think)
-
+The system includes four main services: a User Service (login/register), a Books Service (list/create books), a Loans Service (borrow books), and a Notifications Service (send due-date alerts).
 # Tech
-Java maven, Springboot, Swagger, Github. More Tech to be used in future. 
-
+Java, Maven, Spring Boot, Swagger (OpenAPI), and GitHub.
 # How to use!
-for now you can simply clone the repo, make sure to use java 25 cause seems to be conflicts with some of our dependencies for some group members. Ports will be assigned in application properties. Then you can run all services from intellij and use Swagger to test. Each week With new material we can add more tech like a Docker and databases and increase functionality.
+1- Clone the repository from GitHub.
 
-We will update as we go!
+2- Open the project in IntelliJ (or another IDE).
+
+3- Run the Spring Boot application using the IDE.
+
+4- Once the app is running, open Swagger UI to test the endpoints:
+
++ http://localhost:8080/swagger-ui/index.html
+
+
+Use the API to register/login users, manage books, borrow books, and view notifications depending on the service you are working with.
