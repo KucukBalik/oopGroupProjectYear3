@@ -32,32 +32,28 @@ public class BookService {
 
     public Book create(Book book) {
 
-        if(book.getBookID() == null) {
-
-            books.add(book);
-            return book;
-
-        }else{
+        if(findById(book.getBookID()).isPresent()) {
 
             throw new RuntimeException("Book ID with " + book.getBookID() + " already exists");
 
+        }else{
+            books.add(book);
+            return book;
         }
 
 
     }
 
-    public Book update(Book book) {
+    public void update(Book book) {
 
-        if(book.getBookID() == null) {
+        if(findById(book.getBookID()).isPresent()) {
 
-            throw new RuntimeException("Book ID doesn't exist");
+            books.set(books.indexOf(findById(book.getBookID()).get()), book);
+
 
         }else{
 
-
-            books.set(books.indexOf(book), book);
-            return book;
-
+            throw new RuntimeException("Book ID doesn't exist");
 
         }
 
