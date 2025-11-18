@@ -28,7 +28,7 @@ public class LoanService {
 
     public Loan createLoan(Loan loan) {
         if(getLoanByID(loan.getLoanId()).isPresent()){
-            throw new DuplicateExceptionHandling("Loan: " + loan.getLoanId() + "Already Exists");
+            throw new DuplicateExceptionHandling("Loan: " + loan.getLoanId() + " Already Exists");
         }
         loanList.add(loan);
         return loan;
