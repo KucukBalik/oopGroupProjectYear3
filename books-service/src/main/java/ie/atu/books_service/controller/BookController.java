@@ -1,5 +1,6 @@
 package ie.atu.books_service.controller;
 
+import ie.atu.books_service.ErrorHandling.NotFoundException;
 import ie.atu.books_service.model.Book;
 import ie.atu.books_service.service.BookService;
 import jakarta.validation.Valid;
@@ -36,8 +37,7 @@ public class BookController {
             return ResponseEntity.ok(maybe.get());
         }else{
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Book with id " + id + " not found");
+            throw new NotFoundException("Book ID doesn't exist");
 
         }
 
@@ -56,34 +56,22 @@ public class BookController {
 
     @PutMapping("/updateBook")
     public ResponseEntity<?> updateBook(@Valid @RequestBody Book book) {
-        if (bookService.findById(book.getBookID()).isPresent()) {
 
             bookService.update(book);
 
             return ResponseEntity.status(HttpStatus.OK)
                     .body("Book updated with id " + book.getBookID());
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Book with id " + book.getBookID() + " not found");
 
-
-        }
 
     }
 
     @DeleteMapping("/deleteBook")
     public ResponseEntity<?> deleteBook(@RequestParam("id") String id) {
-        if (bookService.findById(id).isPresent()) {
-            Book deleted = bookService.findById(id).get();
+
             bookService.delete(id);
 
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body("Book deleted with id " + id);
-
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Book with id " + id + " not found");
-        }
 
     }
 

@@ -1,6 +1,9 @@
 package ie.atu.books_service.service;
 
 
+import ch.qos.logback.core.util.DynamicClassLoadingException;
+import ie.atu.books_service.ErrorHandling.DuplicateExceptionHandling;
+import ie.atu.books_service.ErrorHandling.NotFoundException;
 import ie.atu.books_service.model.Book;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.stereotype.Service;
@@ -34,7 +37,7 @@ public class BookService {
 
         if(findById(book.getBookID()).isPresent()) {
 
-            throw new RuntimeException("Book ID with " + book.getBookID() + " already exists");
+            throw new DuplicateExceptionHandling("Book ID with " + book.getBookID() + " already exists");
 
         }else{
             books.add(book);
@@ -53,7 +56,7 @@ public class BookService {
 
         }else{
 
-            throw new RuntimeException("Book ID doesn't exist");
+            throw new NotFoundException("Book ID doesn't exist");
 
         }
 
@@ -65,7 +68,7 @@ public class BookService {
         if (findById(id).isPresent()) {
             books.remove(findById(id).get());
         } else {
-            throw new RuntimeException("Book ID doesn't exist");
+            throw new NotFoundException("Book ID doesn't exist");
 
         }
     }
