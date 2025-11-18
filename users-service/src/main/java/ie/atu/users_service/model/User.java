@@ -1,5 +1,6 @@
 package ie.atu.users_service.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -7,13 +8,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@Entity
+@Table(name = "users")
 @Data@AllArgsConstructor@NoArgsConstructor@Builder
 public class User {
-    @NotBlank@Size(max=50)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @NotBlank@Size(max=50)@Column(unique = true)
     private String userID;
-    @Email@NotBlank@Size(min = 5, max = 30)
+    @Email@NotBlank
     private String email;
-    @NotBlank@Size(min = 8, max = 30)
+    @NotBlank@Size(min = 3, max = 100)
     private String password;
 }

@@ -26,25 +26,20 @@ public class UserController {
 
     // Get Request to Return List of all Users
     @GetMapping("/returnAllUsers")
-    public ResponseEntity<List<User>> getUserList() {
-        return ResponseEntity.ok(userService.getUserList());
+    public List<User> getUserList() {
+        return userService.findAll();
     }
 
     // Get Request to find by ID Search
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable String id) {
-        Optional<User> userFound = userService.getUserByID(id);
-        if (userFound.isPresent()) {
-            return ResponseEntity.ok(userFound.get());
-        } else {
-            throw new NotFoundException("User" + id + "doesnt exist");
-        }
+    public User getUserById(@PathVariable String id) {
+       return userService.getUserById(id);
     }
 
     // Post method to create a single user
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User userCreated = userService.createUser(user);
+        User userCreated = userService.create(user);
         return ResponseEntity
                 .created(URI.create("/api/user" + userCreated.getUserID()))
                 .body(userCreated);
@@ -52,41 +47,21 @@ public class UserController {
 
     // Post method to add multiple users
     @PostMapping("/addUsers")
-    public ResponseEntity<List<User>> addUsers(@Valid @RequestBody List<User> users) {
+    public ResponseEntity<List<User>> createUsers(@Valid @RequestBody List<User> users) {
         List<User> addedUsers = userService.createUsers(users);
         return ResponseEntity
                 .created(URI.create("/api/users"))
                 .body(addedUsers);
     }
 
-    // Put method to update details
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable String id ) throws Exception {
-        user.setUserID(id);
-        Optional<User> userFound = userService.getUserByID(id);
-
-        if (userFound.isPresent()) {
-            User userUpdated = userService.update(user);
-            return ResponseEntity.ok(userUpdated); //("User updated successfully");
-        }
-        else {
-            throw new NotFoundException("User" + id + "doesnt exist");
-        }
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> update(@PathVariable String userId, @RequestBody User user) {
+        return ResponseEntity.ok(userService.update(userId, user));
     }
 
     // Delete method to Delete details
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable String id) {
-        userService.getUserByID(id);
-        Optional<User> userFound = userService.getUserByID(id);
-
-        if (userFound.isPresent()) {
-            User userDeleted = userService.deleteUser(userFound.get());
-            return ResponseEntity.ok(userDeleted);  //("User deleted successfully");
-        }
-        else {
-            throw new NotFoundException("User" + id + "doesnt exist");
-        }
+    public void deleteUser(@PathVariable String id) {
+        userService.deleteUser(id);
     }
-
 }

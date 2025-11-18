@@ -1,6 +1,10 @@
 package ie.atu.users_service.repository;
 
 import ie.atu.users_service.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public class UserRepository /* extends JpaRepository<User, String> */{
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUserID(String userId);
 }
