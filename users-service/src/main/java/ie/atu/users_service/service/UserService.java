@@ -3,9 +3,10 @@ package ie.atu.users_service.service;
 import ie.atu.users_service.errorHandling.DuplicateExceptionHandling;
 import ie.atu.users_service.errorHandling.NotFoundException;
 import ie.atu.users_service.model.User;
+import ie.atu.users_service.repository.UserRepository;
+import jakarta.persistence.Id;
 import org.springframework.stereotype.Service;
 
-import java.io.NotActiveException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,65 +14,47 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final List<User> userList = new ArrayList<>();
-
-    // Defensive Copy of User List -
-    public List<User> getUserList(){
-        return new ArrayList<>(userList);
+    private final UserRepository userRepository;
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
     }
 
-    // Search By ID
-    public Optional<User> getUserByID(String id){
-        for (User user : userList){
-            if(user.getUserID().equals(id)){
-                return Optional.of(user);
-            }
+    public User create(User user){
+        if(userRepository.findByUserID(user.getUserID()).isPresent()) {
+            throw new DuplicateExceptionHandling("Passenger " + user.getUserID() + " already exists D:");
         }
-        return Optional.empty();
+        return userRepository.save(user);
+    }
+
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
+
+    public User getUserById(String userId){
+        return userRepository.findByUserID(userId).orElseThrow(() -> new NotFoundException("User with id " + userId + " not found"));
     }
 
     // Create Multiple Users
     public List<User> createUsers(List<User> userList){
-        List<User> addedUsers = new ArrayList<>();
         for(User user : userList){
-            if(getUserByID(user.getUserID()).isPresent()){
+            if(userRepository.findByUserID(user.getUserID()).isPresent()){
                 throw new DuplicateExceptionHandling("Passenger " + user.getUserID() + " already exists D:");
             }
-            addedUsers.add(createUser(user));
         }
-        return addedUsers;
-    }
-
-    // Create One User
-    public User createUser(User user){
-        if(getUserByID(user.getUserID()).isPresent()){
-            throw new DuplicateExceptionHandling("Passenger " + user.getUserID() + " already exists D:");
-        }
-        userList.add(user);
-        return user;
+        return userRepository.saveAll(userList);
     }
 
     // Update User
-    public User update(User user) {
-        Optional<User> userFound = getUserByID(user.getUserID());
-        if(userFound.isPresent()){
-            User updated = userFound.get();
-            updated.setPassword(user.getPassword());
-            updated.setEmail(user.getEmail());
-            return updated;
-        }
-        throw new NotFoundException("User " +  user.getUserID() + " doesnt exist");
+    public User update(String userId, User user) {
+        User updating = userRepository.findByUserID(userId).orElseThrow(() -> new NotFoundException("User " + user.getUserID() + " doesnt Exist"));
+        updating.setPassword(user.getPassword());
+        updating.setEmail(user.getEmail());
+        return userRepository.save(updating);
     }
 
     // Delete User
-    public User deleteUser(User userFound) {
-        if(getUserByID(userFound.getUserID()).isPresent()){
-            userList.remove(userFound);
-            return userFound;
-        }
-        throw new NotFoundException("User " + userFound.getUserID() + " not found");
+    public void deleteUser(String userId) {
+        User deleting = userRepository.findByUserID(userId).orElseThrow(() -> new NotFoundException("User " + userId + " doesnt Exist"));
+        userRepository.delete(deleting);
     }
-
-
-
 }
