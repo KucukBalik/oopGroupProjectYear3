@@ -1,87 +1,89 @@
 package ie.atu.books_service.controller;
 
 import ie.atu.books_service.model.Book;
+import ie.atu.books_service.service.BookService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.net.URI;
+import java.util.*;
 
 @RequestMapping("/book")
 @RestController
 public class BookController {
 
-    List<Book> books = new ArrayList<>();
-    HashMap<Integer, Book> booksMap = new HashMap<>();
-    List<Integer> removedIDs = new ArrayList<>();
+    private final BookService bookService;
 
-    int ID = 0;
-
-    @GetMapping("/hello")
-    public String hello()
-    {
-        return "Hello Book Service";
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
     }
 
-    @GetMapping("/books")
-    public HashMap<Integer, Book> getBooks()
-    {
-        return booksMap;
+    @GetMapping("/getAllBooks")
+    public ResponseEntity<List<Book>> getAllBooks() {
+
+        return ResponseEntity.ok(bookService.findAll());
+
     }
 
-    @PostMapping("/addBook")
-    public Book addBook(@RequestBody @Valid Book myBook)
-    {
-        if(removedIDs.isEmpty()==false){
-            Collections.sort(removedIDs);
-            booksMap.put(removedIDs.getFirst(), myBook);
+    @GetMapping("/getBook")
+    public ResponseEntity<?> getOne(@RequestParam("id") String id) {
+
+        Optional<Book> maybe = bookService.findById(id);
+
+        if (maybe.isPresent()) {
+            return ResponseEntity.ok(maybe.get());
         }else{
-            ID++;
-            booksMap.put(ID, myBook);
-        }
 
-        return myBook;
-    }
-
-    @PostMapping("/addBulkBook")
-    public HashMap<Integer, Book> myBooks(@RequestBody  List<@Valid Book> myBooks)
-    {
-        books.addAll(myBooks);
-
-        for(int i = 0; i < myBooks.size(); i++){
-            if(removedIDs.isEmpty()==false){
-                Collections.sort(removedIDs);
-                booksMap.put(removedIDs.getFirst(), myBooks.get(i));
-            }else{
-                ID++;
-                booksMap.put(ID, myBooks.get(i));
-            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Book with id " + id + " not found");
 
         }
 
-        return booksMap;
+    }
 
+    @PostMapping("/createBook")
+    public ResponseEntity<?> createBook(@Valid @RequestBody Book book) {
+
+        Book created =  bookService.create(book);
+
+        return ResponseEntity
+                .created(URI.create("/api/books/" + created.getBookID()))
+                .body("Book created with id " + created.getBookID());
 
     }
 
-    @PostMapping("/update/{id}/")
-    public HashMap<Integer, Book> myBooks(@PathVariable int id, @RequestBody @Valid Book myBook)
-    {
+    @PutMapping("/updateBook")
+    public ResponseEntity<?> updateBook(@Valid @RequestBody Book book) {
+        if (bookService.findById(book.getBookID()).isPresent()) {
 
-        booksMap.put(id, myBook);
+            bookService.update(book);
 
-        return booksMap;
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("Book updated with id " + book.getBookID());
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Book with id " + book.getBookID() + " not found");
+
+
+        }
+
     }
 
+    @DeleteMapping("/deleteBook")
+    public ResponseEntity<?> deleteBook(@RequestParam("id") String id) {
+        if (bookService.findById(id).isPresent()) {
+            Book deleted = bookService.findById(id).get();
+            bookService.delete(id);
 
-    @DeleteMapping("/delete/{id}")
-    public HashMap<Integer, Book> myBooks (@PathVariable int id) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body("Book deleted with id " + id);
 
-        booksMap.remove(id);
-        removedIDs.add(id);
-        return booksMap;
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Book with id " + id + " not found");
+        }
 
     }
 
