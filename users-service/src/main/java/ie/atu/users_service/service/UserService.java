@@ -4,12 +4,8 @@ import ie.atu.users_service.errorHandling.DuplicateExceptionHandling;
 import ie.atu.users_service.errorHandling.NotFoundException;
 import ie.atu.users_service.model.User;
 import ie.atu.users_service.repository.UserRepository;
-import jakarta.persistence.Id;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -57,4 +53,5 @@ public class UserService {
         User deleting = userRepository.findByUserID(userId).orElseThrow(() -> new NotFoundException("User " + userId + " doesnt Exist"));
         userRepository.delete(deleting);
     }
+
 }

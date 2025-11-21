@@ -3,6 +3,7 @@ package ie.atu.loansservice.controller;
 import ie.atu.loansservice.errorHandling.NotFoundException;
 import ie.atu.loansservice.feign.client.LoanServiceClient;
 import ie.atu.loansservice.model.Loan;
+import ie.atu.loansservice.model.UserDTO;
 import ie.atu.loansservice.service.LoanService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,9 @@ public class LoanController {
     }
 
     @GetMapping("/user/{userId}")
-    public String testGetUser(@PathVariable String userId){
-        String fromUsers = loanServiceClient.getUserById(userId);
-        return "Methods from Users: " + fromUsers + "to loans service!";
+    public ResponseEntity<UserDTO> testGetUser(@PathVariable String userId){
+        UserDTO fromUsers = loanServiceClient.getUserById(userId);
+        return ResponseEntity.ok(fromUsers);
     }
 
     // Get Request to Return List of all Loans
