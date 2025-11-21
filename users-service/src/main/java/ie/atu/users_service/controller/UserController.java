@@ -31,9 +31,9 @@ public class UserController {
     }
 
     // Get Request to find by ID Search
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable String id) {
-       return userService.getUserById(id);
+    @GetMapping("/callUserService/{userId}")
+    public User getUserById(@PathVariable String userId) {
+       return userService.getUserById(userId);
     }
 
     // Post method to create a single user

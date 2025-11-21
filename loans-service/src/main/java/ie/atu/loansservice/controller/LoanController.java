@@ -1,9 +1,11 @@
 package ie.atu.loansservice.controller;
 
 import ie.atu.loansservice.errorHandling.NotFoundException;
+import ie.atu.loansservice.feign.client.LoanServiceClient;
 import ie.atu.loansservice.model.Loan;
 import ie.atu.loansservice.service.LoanService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +19,18 @@ public class LoanController {
 
     // Constructor Based Dependency Injection
     private final LoanService loanService;
-    public LoanController(LoanService loanService){
+    @Autowired
+    private final LoanServiceClient loanServiceClient;
+
+    public LoanController(LoanService loanService, LoanServiceClient loanServiceClient){
         this.loanService = loanService;
+        this.loanServiceClient = loanServiceClient;
+    }
+
+    @GetMapping("/user/{userId}")
+    public String testGetUser(@PathVariable String userId){
+        String fromUsers = loanServiceClient.getUserById(userId);
+        return "Methods from Users: " + fromUsers + "to loans service!";
     }
 
     // Get Request to Return List of all Loans
@@ -45,4 +57,5 @@ public class LoanController {
                 .created(URI.create("/api/loan" + loanCreated.getLoanId()))
                 .body(loanCreated);
     }
+
 }
