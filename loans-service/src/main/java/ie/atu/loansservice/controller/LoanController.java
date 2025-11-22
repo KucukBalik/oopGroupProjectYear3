@@ -47,7 +47,7 @@ public class LoanController {
             return ResponseEntity.ok(loanFound.get());
         }
         else{
-            throw new NotFoundException("Loan: " + id + " Doesnt Exist");
+            throw new NotFoundException(id + " Doesnt Exist");
         }
     }
 
