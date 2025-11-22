@@ -17,4 +17,6 @@ public class Loan {
     @NotBlank
     private String bookId;
     private LocalDate loanDate;
+    private LocalDate dueDate;
+
 }
