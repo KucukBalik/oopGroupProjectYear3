@@ -17,7 +17,7 @@ public class UserService {
 
     public User create(User user){
         if(userRepository.findByUserID(user.getUserID()).isPresent()) {
-            throw new DuplicateExceptionHandling("Passenger " + user.getUserID() + " already exists D:");
+            throw new DuplicateExceptionHandling(user.getUserID() + " already exists D:");
         }
         return userRepository.save(user);
     }
@@ -27,14 +27,14 @@ public class UserService {
     }
 
     public User getUserById(String userId){
-        return userRepository.findByUserID(userId).orElseThrow(() -> new NotFoundException("User with id " + userId + " not found"));
+        return userRepository.findByUserID(userId).orElseThrow(() -> new NotFoundException(userId + " not found"));
     }
 
     // Create Multiple Users
     public List<User> createUsers(List<User> userList){
         for(User user : userList){
             if(userRepository.findByUserID(user.getUserID()).isPresent()){
-                throw new DuplicateExceptionHandling("Passenger " + user.getUserID() + " already exists D:");
+                throw new DuplicateExceptionHandling(user.getUserID() + " already exists D:");
             }
         }
         return userRepository.saveAll(userList);
@@ -42,7 +42,7 @@ public class UserService {
 
     // Update User
     public User update(String userId, User user) {
-        User updating = userRepository.findByUserID(userId).orElseThrow(() -> new NotFoundException("User " + user.getUserID() + " doesnt Exist"));
+        User updating = userRepository.findByUserID(userId).orElseThrow(() -> new NotFoundException(user.getUserID() + " doesnt Exist"));
         updating.setPassword(user.getPassword());
         updating.setEmail(user.getEmail());
         return userRepository.save(updating);
@@ -50,7 +50,7 @@ public class UserService {
 
     // Delete User
     public void deleteUser(String userId) {
-        User deleting = userRepository.findByUserID(userId).orElseThrow(() -> new NotFoundException("User " + userId + " doesnt Exist"));
+        User deleting = userRepository.findByUserID(userId).orElseThrow(() -> new NotFoundException(userId + " doesnt Exist"));
         userRepository.delete(deleting);
     }
 

@@ -25,7 +25,7 @@ public class GlobalExceptionHandling {
     @ExceptionHandler(DuplicateExceptionHandling.class)
     public ResponseEntity<ExceptionDetails> duplicateException(DuplicateExceptionHandling dupe){
         ExceptionDetails errorDetails = new ExceptionDetails();
-        errorDetails.setFieldname("User ID: ");
+        errorDetails.setFieldname("[ERROR] UserID ");
         errorDetails.setFieldValue(dupe.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
     }
@@ -33,7 +33,7 @@ public class GlobalExceptionHandling {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionDetails> notFoundException(NotFoundException nfe){
         ExceptionDetails errorDetails = new ExceptionDetails();
-        errorDetails.setFieldname("User ID: ");
+        errorDetails.setFieldname("[ERROR] UserID ");
         errorDetails.setFieldValue(nfe.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
     }

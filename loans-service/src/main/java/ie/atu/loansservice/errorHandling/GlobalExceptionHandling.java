@@ -26,7 +26,7 @@ public class GlobalExceptionHandling {
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<ExceptionDetails> showErrorDetails(FeignException feignException){
         ExceptionDetails errorDetails = new ExceptionDetails();
-        errorDetails.setFieldname("[ERROR] Likely Due to ID Request Not Found ");
+        errorDetails.setFieldname("[ERROR] ID ");
         errorDetails.setFieldValue(feignException.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
     }
@@ -34,7 +34,7 @@ public class GlobalExceptionHandling {
     @ExceptionHandler(DuplicateExceptionHandling.class)
     public ResponseEntity<ExceptionDetails> duplicateException(DuplicateExceptionHandling dupe){
         ExceptionDetails errorDetails = new ExceptionDetails();
-        errorDetails.setFieldname("Loan ID: ");
+        errorDetails.setFieldname("[ERROR] Loan ID ");
         errorDetails.setFieldValue(dupe.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
     }
@@ -42,7 +42,7 @@ public class GlobalExceptionHandling {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionDetails> notFoundException(NotFoundException nfe){
         ExceptionDetails errorDetails = new ExceptionDetails();
-        errorDetails.setFieldname("Loan ID: ");
+        errorDetails.setFieldname("[ERROR] Loan ID ");
         errorDetails.setFieldValue(nfe.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
     }
