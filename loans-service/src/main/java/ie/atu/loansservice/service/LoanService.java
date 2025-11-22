@@ -7,6 +7,7 @@ import ie.atu.loansservice.model.Loan;
 import ie.atu.loansservice.model.UserDTO;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,17 @@ public class LoanService {
         return Optional.empty();
     }
 
+    public List<Loan> getDueLoans(){
+        List<Loan> dueLoans = new ArrayList<>();
+        for (Loan loan : loanList){
+            //loan.setDueDate(LocalDate.now().minusDays(1));
+            if(LocalDate.now().isAfter(loan.getDueDate())){
+                dueLoans.add(loan);
+            }
+        }
+        return dueLoans;
+    }
+
     public Loan createLoan(Loan loan) {
         if(getLoanByID(loan.getLoanId()).isPresent()){
             throw new DuplicateExceptionHandling(loan.getLoanId() + " Already Exists");
@@ -43,6 +55,9 @@ public class LoanService {
         if(user == null){
             throw new NotFoundException(loan.getUserId() + " doesnt Exist");
         }
+        loan.setLoanDate(LocalDate.now());
+        loan.setDueDate(LocalDate.now().plusWeeks(1));
+        loan.setReminderDate(LocalDate.now().plusWeeks(1).minusDays(1));
         loanList.add(loan);
         return loan;
     }
