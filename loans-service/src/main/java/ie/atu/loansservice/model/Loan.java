@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data@AllArgsConstructor@NoArgsConstructor@Builder
 public class Loan {
     @NotBlank
@@ -14,4 +16,5 @@ public class Loan {
     private String userId;
     @NotBlank
     private String bookId;
+    private LocalDate loanDate;
 }

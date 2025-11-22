@@ -7,6 +7,7 @@ import ie.atu.loansservice.model.Loan;
 import ie.atu.loansservice.model.UserDTO;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,7 @@ public class LoanService {
         if(user == null){
             throw new NotFoundException(loan.getUserId() + " doesnt Exist");
         }
+        loan.setLoanDate(LocalDate.now());
         loanList.add(loan);
         return loan;
     }
