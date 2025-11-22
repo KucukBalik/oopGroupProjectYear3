@@ -46,14 +46,8 @@ public class LoanController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Loan> getLoanById(@PathVariable String id){
-        Optional<Loan> loanFound = loanService.getLoanByID(id);
-        if(loanFound.isPresent()){
-            return ResponseEntity.ok(loanFound.get());
-        }
-        else{
-            throw new NotFoundException(id + " Doesnt Exist");
-        }
+    public ResponseEntity<Loan> getLoanById(@PathVariable String loanId){
+        return ResponseEntity.ok(loanService.getLoanByID(loanId));
     }
 
     @PostMapping
