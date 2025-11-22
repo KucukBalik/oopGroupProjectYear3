@@ -1,5 +1,6 @@
 package ie.atu.loansservice.errorHandling;
 
+import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -20,6 +21,14 @@ public class GlobalExceptionHandling {
             errorList.add(new ExceptionDetails(fieldError.getField(), fieldError.getDefaultMessage()));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorList);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ExceptionDetails> showErrorDetails(FeignException feignException){
+        ExceptionDetails errorDetails = new ExceptionDetails();
+        errorDetails.setFieldname("[ERROR] Likely Due to ID Request Not Found ");
+        errorDetails.setFieldValue(feignException.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
     }
 
     @ExceptionHandler(DuplicateExceptionHandling.class)
