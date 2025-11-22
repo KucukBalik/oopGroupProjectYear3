@@ -1,7 +1,7 @@
 package ie.atu.loansservice.controller;
 
 import ie.atu.loansservice.errorHandling.NotFoundException;
-import ie.atu.loansservice.feign.client.LoanServiceClient;
+import ie.atu.loansservice.feign.client.UserClient;
 import ie.atu.loansservice.model.Loan;
 import ie.atu.loansservice.model.UserDTO;
 import ie.atu.loansservice.service.LoanService;
@@ -21,16 +21,16 @@ public class LoanController {
     // Constructor Based Dependency Injection
     private final LoanService loanService;
     @Autowired
-    private final LoanServiceClient loanServiceClient;
+    private final UserClient userClient;
 
-    public LoanController(LoanService loanService, LoanServiceClient loanServiceClient){
+    public LoanController(LoanService loanService, UserClient userClient){
         this.loanService = loanService;
-        this.loanServiceClient = loanServiceClient;
+        this.userClient = userClient;
     }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<UserDTO> testGetUser(@PathVariable String userId){
-        UserDTO fromUsers = loanServiceClient.getUserById(userId);
+        UserDTO fromUsers = userClient.getUserById(userId);
         return ResponseEntity.ok(fromUsers);
     }
 
