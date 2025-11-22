@@ -5,50 +5,36 @@ import ie.atu.loansservice.errorHandling.NotFoundException;
 import ie.atu.loansservice.feign.client.UserClient;
 import ie.atu.loansservice.model.Loan;
 import ie.atu.loansservice.model.UserDTO;
+import ie.atu.loansservice.repository.LoanRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LoanService {
 
     private final UserClient userClient;
-
-    public LoanService(UserClient userClient) {
+    private final LoanRepository loanRepository;
+    public LoanService(UserClient userClient, LoanRepository loanRepository) {
         this.userClient = userClient;
+        this.loanRepository = loanRepository;
     }
 
-    private final List<Loan> loanList = new ArrayList<>();
-
     // Defensive Copy of Loan List
-    public List<Loan> getLoanList() { return new ArrayList<>(loanList); }
+    public List<Loan> getLoanList() { return loanRepository.findAll(); }
 
     // Search By ID
-    public Optional<Loan> getLoanByID(String id){
-        for (Loan loan : loanList){
-            if(loan.getLoanId().equals(id)){
-                return Optional.of(loan);
-            }
-        }
-        return Optional.empty();
+    public Loan getLoanByID(String loanId){
+        return loanRepository.findByLoanId(loanId).orElseThrow(() -> new NotFoundException(loanId + " not found"));
     }
 
     public List<Loan> getDueLoans(){
-        List<Loan> dueLoans = new ArrayList<>();
-        for (Loan loan : loanList){
-            //loan.setDueDate(LocalDate.now().minusDays(1));
-            if(LocalDate.now().isAfter(loan.getDueDate())){
-                dueLoans.add(loan);
-            }
-        }
-        return dueLoans;
+        return loanRepository.findByDueDateAfter(LocalDate.now());
     }
 
     public Loan createLoan(Loan loan) {
-        if(getLoanByID(loan.getLoanId()).isPresent()){
+        if(loanRepository.findByLoanId(loan.getLoanId()).isPresent()){
             throw new DuplicateExceptionHandling(loan.getLoanId() + " Already Exists");
         }
         UserDTO user = userClient.getUserById(loan.getUserId());
@@ -58,7 +44,10 @@ public class LoanService {
         loan.setLoanDate(LocalDate.now());
         loan.setDueDate(LocalDate.now().plusWeeks(1));
         loan.setReminderDate(LocalDate.now().plusWeeks(1).minusDays(1));
-        loanList.add(loan);
-        return loan;
+        return loanRepository.save(loan);
     }
+
+    // Add Update
+
+    // Add Delete
 }
