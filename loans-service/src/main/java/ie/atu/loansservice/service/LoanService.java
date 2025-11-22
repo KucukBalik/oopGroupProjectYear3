@@ -36,6 +36,17 @@ public class LoanService {
         return Optional.empty();
     }
 
+    public List<Loan> getDueLoans(){
+        List<Loan> dueLoans = new ArrayList<>();
+        for (Loan loan : loanList){
+            //loan.setDueDate(LocalDate.now().minusDays(1));
+            if(LocalDate.now().isAfter(loan.getDueDate())){
+                dueLoans.add(loan);
+            }
+        }
+        return dueLoans;
+    }
+
     public Loan createLoan(Loan loan) {
         if(getLoanByID(loan.getLoanId()).isPresent()){
             throw new DuplicateExceptionHandling(loan.getLoanId() + " Already Exists");

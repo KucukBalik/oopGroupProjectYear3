@@ -28,6 +28,11 @@ public class LoanController {
         this.userClient = userClient;
     }
 
+    @GetMapping("/returnDueLoans")
+    public ResponseEntity<List<Loan>> getReturnDueLoans(){
+        return ResponseEntity.ok(loanService.getDueLoans());
+    }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<UserDTO> testGetUser(@PathVariable String userId){
         UserDTO fromUsers = userClient.getUserById(userId);
