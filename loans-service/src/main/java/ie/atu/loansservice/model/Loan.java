@@ -18,5 +18,5 @@ public class Loan {
     private String bookId;
     private LocalDate loanDate;
     private LocalDate dueDate;
-
+    private LocalDate reminderDate;
 }

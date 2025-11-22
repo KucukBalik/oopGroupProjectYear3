@@ -46,6 +46,7 @@ public class LoanService {
         }
         loan.setLoanDate(LocalDate.now());
         loan.setDueDate(LocalDate.now().plusWeeks(1));
+        loan.setReminderDate(LocalDate.now().plusWeeks(1).minusDays(1));
         loanList.add(loan);
         return loan;
     }
