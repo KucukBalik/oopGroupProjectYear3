@@ -1,6 +1,7 @@
 package ie.atu.books_service.service;
 
 
+import BookRepository.BookRepository;
 import ch.qos.logback.core.util.DynamicClassLoadingException;
 import ie.atu.books_service.ErrorHandling.DuplicateExceptionHandling;
 import ie.atu.books_service.ErrorHandling.NotFoundException;
@@ -15,10 +16,15 @@ import java.util.Optional;
 @Service
 public class BookService {
 
-    private final List<Book> books = new ArrayList<>();
+    private final BookRepository bookRepository;
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
 
     public List<Book> findAll() {
-        return new ArrayList<>(books);
+        return bookRepository.findAll();
     }
 
     public Optional<Book> findById(String id) {
