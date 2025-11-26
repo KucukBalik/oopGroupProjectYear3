@@ -12,6 +12,16 @@
         <module name="loans-service (1)" />
         <module name="notifications-service (1)" />
       </profile>
+      <profile name="Annotation profile for notifications-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
+        </processorPath>
+        <module name="notifications-service" />
+        <module name="books-service" />
+      </profile>
       <profile name="Annotation profile for users-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -19,10 +29,8 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
         </processorPath>
-        <module name="loans-service" />
-        <module name="books-service" />
         <module name="users-service" />
-        <module name="notifications-service" />
+        <module name="loans-service" />
       </profile>
     </annotationProcessing>
   </component>
