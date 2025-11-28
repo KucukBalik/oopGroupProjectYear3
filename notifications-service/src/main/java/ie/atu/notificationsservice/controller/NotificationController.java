@@ -1,0 +1,64 @@
+package ie.atu.notificationsservice.controller;
+
+import ie.atu.notificationsservice.dto.BookDueSoonRequestDTO;
+import ie.atu.notificationsservice.dto.BookOverdueRequestDTO;
+import ie.atu.notificationsservice.service.EmailService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/email/book")
+
+public class NotificationController {
+
+    private final EmailService emailService;
+
+    public NotificationController(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
+    @PostMapping("/due-soon")
+    public ResponseEntity<Void> sendDueSoon(@RequestBody @Valid BookDueSoonRequestDTO request) {
+        emailService.sendBookDueSoon(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/overdue")
+    public ResponseEntity<Void> sendOverdue(@RequestBody @Valid BookOverdueRequestDTO request) {
+        emailService.sendBookOverdue(request);
+        return ResponseEntity.ok().build();
+    }
+}
+
+
+
+
+// Rethink endpoints needed
+//**********************************************************************
+/*
+     To create basic endpoints for notifications service.
+     If a book is DueSoon a notification will be sent out.
+     If a book is Overdue a notification will be sent out.
+
+    Loan Service Detects BookDueSoon or BookOverdue and creates an event.
+
+    Notification Service Receives the event loads user info and then emails them.
+
+    User Service Stores user email and Notification Service calls it to get the email address.
+
+
+
+
+
+    **************************************************************************
+    To reserve a book
+    BookService and notifications would have to be updated
+    and user id referenced to reserve book.
+
+
+
+
+
+
+ */
