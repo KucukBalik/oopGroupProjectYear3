@@ -20,7 +20,9 @@ public class EmailService {
         msg.setTo(request.getUserEmail());
         msg.setSubject("Book Due Soon: " + request.getBookTitle());
         msg.setText("Your book \"" + request.getBookTitle() + "\" is due on " + request.getDueDate());
-        mailSender.send(msg);
+        //mailSender.send(msg);                                                                         // error 500 from email settings issue
+        System.out.println("EMAIL WOULD SEND: " + msg);                                                  // for testing
+
     }
 
     public void sendBookOverdue(BookOverdueRequestDTO request) {
@@ -28,27 +30,9 @@ public class EmailService {
         msg.setTo(request.getUserEmail());
         msg.setSubject("Book Overdue: " + request.getBookTitle());
         msg.setText("Your book \"" + request.getBookTitle() + "\" was due on " + request.getDueDate());
-        mailSender.send(msg);
+        //mailSender.send(msg);                                                                         // error 500 from email settings issue
+        System.out.println("EMAIL WOULD SEND: " + msg);                                                 // for testing
+
     }
 }
 
-/*
-
-
-notifications-service/
-├─ src/main/java/ie/atu/notificationsservice/
-│  ├─ controller/
-│  │  └─ NotificationController.java
-│  ├─ dto/
-│  │  ├─ BookDueSoonRequest.java
-│  │  ├─ BookOverdueRequest.java
-│  │  ├─ UserResponse.java
-│  │  └─ BookResponse.java
-│  ├─ feign/
-│  │  ├─ UserClient.java
-│  │  └─ BookClient.java
-│  ├─ model/
-│  │  └─ NotificationEntity.java (optional H2 entity)
-
-
- */
